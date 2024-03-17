@@ -90,3 +90,18 @@ In this algorithm, the time complexity is O (n log n), where n is the number of 
 The Interval Scheduling algorithm is mostly used in time management in practical life, such as airlines arranging flights and arranging takeoff and landing times reasonably to ensure sufficient time intervals between flights, while minimizing aircraft waiting time and ground congestion.
 >
 Alternatively, by optimizing the use of classrooms, schools can maximize the utilization of teaching resources and ensure that there are no time conflicts between courses
+
+# Interval Partitioning
+
+## Introduction
+Interval Partitioning is a problem-solving technique used to assign a series of tasks (or activities) with start and end times to a set of resources in order to minimize the number of resources
+
+## Description
+Arrange a series of meetings in the minimum number of meeting rooms to ensure that there are no conflicts in meeting time. The key to solving this problem lies in scheduling meetings reasonably to minimize the use of conference room resources while ensuring that all meetings can be held smoothly.
+
+## Goal
+Ensure that each task is assigned to a resource and there are no conflicts between resources, i.e. the time intervals of the tasks do not overlap.
+
+
+
+
