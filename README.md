@@ -102,6 +102,86 @@ Arrange a series of meetings in the minimum number of meeting rooms to ensure th
 ## Goal
 Ensure that each task is assigned to a resource and there are no conflicts between resources, i.e. the time intervals of the tasks do not overlap.
 
+![Image Title](04.png)
+
+
+## Pseudocode
+
+```
+
+Sort intervals by starting time so that s1 ≤ s2 ≤ ... ≤ sn.
+d ← 0
+for j ← 1 to n {
+    if (lecture j is compatible with some classroom k)
+        schedule lecture j in classroom k
+    else
+        allocate a new classroom d + 1
+        schedule lecture j in classroom d + 1
+        d ← d + 1
+}
+return number of allocated classrooms
+
+
+```
+### Algorithmic principle
+Sort tasks by start time and schedule them within the same resource (such as a classroom) as much as possible until time conflicts arise. If there is a time conflict, allocate a new resource and schedule the task within the new resource.
+
+## Operate
+
+- Firstly, sort the tasks according to their start time to ensure they are processed in chronological order.
+- Initialize a variable (such as classrooms) to record the number of assigned classrooms, with an initial value of 0.
+- Traverse the sorted task list and process each task as follows:
+          - Check if the current task is compatible with an assigned classroom (i.e. does not conflict with any tasks in the assigned classroom).
+          - If the current task is compatible with a certain classroom, schedule the task in that classroom.
+          - If the current task is not compatible with all assigned classrooms, assign a new classroom with the number classrooms+1 to the current task.
+- Every time a new classroom is assigned to a task, increase the number of assigned classrooms by 1.
+- Finally, return the allocated number of classrooms, which is the minimum required number of classrooms.
+
+
+## Algorithm implement
+The Implementation of Algorithms in C++
+```
+int intervalPartitioning(std::vector<Interval>& intervals) {
+    if (intervals.empty()) return 0;
+    std::sort(intervals.begin(), intervals.end(), compareStartTime);
+    std::vector<int> endTimes;
+    int allocatedClassrooms = 0;
+    for (const auto& interval : intervals) {
+        bool assigned = false;
+        for (int i = 0; i < endTimes.size(); ++i) {
+            if (interval.start >= endTimes[i]) {
+                endTimes[i] = interval.end;
+                assigned = true;
+                break;
+            }
+        }
+        if (!assigned) {
+            endTimes.push_back(interval.end);
+            ++allocatedClassrooms;
+        }
+    }
+    return allocatedClassrooms + 1;
+}
+
+```
+
+## Time complexity 
+
+The time complexity depends on sorting and traversal operations.
+Sorting operation: Sort tasks according to their start time, with a time complexity of O (n log n), where n is the number of tasks.
+Traversing operation: Traversing the sorted task list once, each task needs to search for available time periods in the assigned classrooms, with a time complexity of O (k), where k is the number of assigned classrooms. Due to the fact that each task needs to be compared to at most each time period in the assigned classroom, the overall time complexity is O (nk).
+Overall, the time complexity of this code is O (n log n+nk). In the worst-case scenario, when k approaches n, the complexity can be simplified to O (n<sup>2</sup>).
+
+
+
+
+
+
+
+
+
+
+
 
 
 
