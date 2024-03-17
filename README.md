@@ -132,12 +132,12 @@ Calculate the maximum total value by recursively considering two options for eac
 
 - Firstly, sort all tasks by end time to ensure that they are arranged in non decreasing order of end time.
 - For each task j, find the index of the last completed task before the start of task j. This index represents the last compatible task of task j, denoted as p (j).
-  Use the recursive function Compute Opt (j) to calculate the maximum value. This function takes task index j as a parameter and returns the maximum total value that can be obtained from task 1 to task j.
-          -Basic situation: If j=0, there are no tasks to choose from, and the return value is 0.
-          -Recursive situation: For task j, there are two options: Including task j: At this point, the total value is vj plus the maximum total value opened by p (j)
-                -Including task j: At this point, the total value is vj plus the maximum total value opened by p (j)
-                -Excluding task j: At this point, the total value ranges from 1 to j-1, indicating one's maximum total value
-  -the calculation result is the maximum value between these two options.
+- Use the recursive function Compute Opt (j) to calculate the maximum value. This function takes task index j as a parameter and returns the maximum total value that can be obtained from task 1 to task j.
+          - Basic situation: If j=0, there are no tasks to choose from, and the return value is 0.
+          - Recursive situation: For task j, there are two options: Including task j: At this point, the total value is vj plus the maximum total value opened by p (j)
+                - Including task j: At this point, the total value is vj plus the maximum total value opened by p (j)
+                - Excluding task j: At this point, the total value ranges from 1 to j-1, indicating one's maximum total value
+  - the calculation result is the maximum value between these two options.
 
 - Call the Compute-Opt function with n as a parameter to find the maximum total value considering all tasks.
 
