@@ -91,6 +91,101 @@ The Interval Scheduling algorithm is mostly used in time management in practical
 >
 Alternatively, by optimizing the use of classrooms, schools can maximize the utilization of teaching resources and ensure that there are no time conflicts between courses
 
+
+# Weighted Interval Scheduling
+
+## Introduction
+Weighted Interval Scheduling is an extension of the Interval Scheduling problem, which considers not only the start and end times of tasks but also their associated weights or values.
+
+## Description
+In Weighted Interval Scheduling, each task has a start time, an end time, and a weight, representing its importance or value. The goal is to select a subset of tasks such that no two tasks overlap in time and the total weight of the selected tasks is maximized. 
+
+## Goal
+Find an optimal solution that balances task selection and time constraints to achieve the highest possible overall value.
+
+
+
+
+## Pseudocode
+
+```
+
+Input: n, s1,...,sn , f1,...,fn , v1,...,vn
+Sort jobs by finish times so that f1 ≤ f2 ≤ ... ≤ fn.
+Compute p(1), p(2), ..., p(n)
+Compute-Opt(j) {
+    if (j = 0)
+        return 0
+    else
+        return max(vj + Compute-Opt(p(j)), Compute-Opt(j-1))
+}
+Weighted Interval Scheduling: Brute Force
+Brute force algorithm.
+
+
+
+```
+### Algorithmic principle
+Calculate the maximum total value by recursively considering two options for each task (including or not including) and selecting the optimal solution. By continuously considering the compatibility and value of tasks, we ultimately find the optimal combination of tasks to achieve maximum total value.
+
+## Operate
+
+- Firstly, sort all tasks by end time to ensure that they are arranged in non decreasing order of end time.
+- For each task j, find the index of the last completed task before the start of task j. This index represents the last compatible task of task j, denoted as p (j).
+  Use the recursive function Compute Opt (j) to calculate the maximum value. This function takes task index j as a parameter and returns the maximum total value that can be obtained from task 1 to task j.
+          -Basic situation: If j=0, there are no tasks to choose from, and the return value is 0.
+          -Recursive situation: For task j, there are two options: Including task j: At this point, the total value is vj plus the maximum total value opened by p (j)
+                -Including task j: At this point, the total value is vj plus the maximum total value opened by p (j)
+                -Excluding task j: At this point, the total value ranges from 1 to j-1, indicating one's maximum total value
+  -the calculation result is the maximum value between these two options.
+
+- Call the Compute-Opt function with n as a parameter to find the maximum total value considering all tasks.
+
+## Algorithm implement
+The Implementation of Algorithms in C++
+```
+bool compareJobs(const Job& a, const Job& b) {
+    return a.finish < b.finish;
+}
+
+int findLastCompatible(const vector<Job>& jobs, int currentJob) {
+    for (int i = currentJob - 1; i >= 0; --i) {
+        if (jobs[i].finish <= jobs[currentJob].start) {
+            return i;
+        }
+    }
+    return -1;  // No compatible job found
+}
+
+int computeOpt(const vector<Job>& jobs, vector<int>& memo, int currentJob) {
+    if (currentJob == 0) {
+        return 0;
+    }
+    if (memo[currentJob] != -1) {
+        return memo[currentJob];
+    }
+    int lastCompatible = findLastCompatible(jobs, currentJob);
+    int includeCurrent = jobs[currentJob].value + (lastCompatible == -1 ? 0 : computeOpt(jobs, memo, lastCompatible));
+    int excludeCurrent = computeOpt(jobs, memo, currentJob - 1);
+    memo[currentJob] = max(includeCurrent, excludeCurrent);
+    return memo[currentJob];
+}
+
+int weightedIntervalScheduling(vector<Job>& jobs) {
+    sort(jobs.begin(), jobs.end(), compareJobs);
+    vector<int> memo(jobs.size(), -1);
+    return computeOpt(jobs, memo, jobs.size() - 1);
+}
+
+```
+
+## Time complexity 
+
+The time complexity of sorting tasks by end time is O (n log n), where n is the number of tasks.
+For each task j, it is necessary to find the index of the last compatible task and calculate the maximum value of the two choices. In the worst-case scenario, for each task j, it is necessary to traverse the previous tasks to find the last compatible task, resulting in a total time complexity of O (n<sup>2</sup>). However, due to the use of memory search and the avoidance of duplicate calculations, the actual time complexity will be lower, approaching linear complexity.
+Overall the time complexity of the algorithm is O (n log n), where n is the number of tasks.
+
+
 # Interval Partitioning
 
 ## Introduction
