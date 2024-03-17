@@ -173,6 +173,82 @@ Traversing operation: Traversing the sorted task list once, each task needs to s
 Overall, the time complexity of this code is O (n log n+nk). In the worst-case scenario, when k approaches n, the complexity can be simplified to O (n<sup>2</sup>).
 
 
+# Scheduling to Minimize Lateness
+
+## Introduction
+Scheduling to Minimize Lateness is a problem-solving technique used in task management to minimize the lateness of completing tasks in relation to their respective deadlines. 
+
+## Description
+Each task is associated with a deadline by which it must be completed. The goal is to arrange the tasks in a schedule that minimizes the lateness of each task, which is defined as the amount of time by which the task completion exceeds its deadline. 
+
+## Goal
+Create a schedule that minimizes the lateness of completing tasks in relation to their deadlines.
+
+![Image Title](245.png)
+
+
+## Pseudocode
+
+```
+
+Sort n jobs by deadline so that d1 ≤ d2 ≤ ... ≤ dn
+t ← 0
+for j = 1 to n
+    Assign job j to interval [t, t + tj]
+    sj ← t, fj ← t + tj
+    t ← t + tj
+output intervals [sj, fj]
+
+
+
+```
+### Algorithmic principle
+Sort tasks by deadline and arrange their execution order based on their execution time to minimize task latency. By greedily scheduling tasks according to their deadlines, it is possible to minimize task delays and improve task execution efficiency.
+
+## Operate
+
+- Firstly, sort the tasks according to their deadline d, ensuring that d1 ≤ d2 ≤... ≤ DN
+- Initialize a time variable t to 0, representing the current point in time.
+- Traverse the sorted task list, for each task:
+          - Assign the current task j to the time period [t, t+tj] for execution, where tj is the execution time of task j
+          - Record the start time sj of task j as the current time t, and the end time fj as the current time t plus the execution time tj
+          - Update the current time t to the time point t+tj after the task execution ends, which is the time point at which the next task can start.
+- Output the time period [sj, fj] for all tasks, representing the execution time period for each task.
+
+## Algorithm implement
+The Implementation of Algorithms in C++
+```
+void scheduleJobs(vector<Job>& jobs) {
+    // Sort jobs by deadline
+    sort(jobs.begin(), jobs.end(), compareDeadline);
+    
+    int currentTime = 0;
+    vector<pair<int, int>> intervals;
+    
+    for (int i = 0; i < jobs.size(); ++i) {
+        Job& currentJob = jobs[i];
+        int startTime = currentTime;
+        int endTime = currentTime + currentJob.duration;
+        
+        intervals.push_back({startTime, endTime});
+        
+        // Update current time
+        currentTime += currentJob.duration;
+    }
+    
+    // Output intervals
+    for (int i = 0; i < intervals.size(); ++i) {
+        cout << "Interval for job " << i + 1 << ": [" << intervals[i].first << ", " << intervals[i].second << "]" << endl;
+    }
+}
+
+```
+
+## Time complexity 
+
+The time complexity of this algorithm is O (n log n), where n is the number of tasks, as it involves sorting tasks by deadline and then linearly scanning the sorted task list to allocate execution time slots for each task.
+
+
 
 
 
